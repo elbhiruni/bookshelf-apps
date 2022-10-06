@@ -13,6 +13,16 @@ document.addEventListener("DOMContentLoaded", function () {
     event.preventDefault();
     addBook();
 
+    Swal.fire({
+      toast: true,
+      icon: "success",
+      position: "top-right",
+      title: "Buku berhasil dimasukkan ke rak " + btnTextIsComplete.textContent,
+      timer: 2500,
+      timerProgressBar: true,
+      showConfirmButton: false,
+    });
+
     if (inputBookIsComplete.checked) {
       btnTextIsComplete.textContent = "Selesai dibaca";
     } else {
