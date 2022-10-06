@@ -8,11 +8,14 @@
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Bookshelf Apps</title>
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
+
+    <!-- Static Material Symbols -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap"
       rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"
     />
+
+    <!-- Style -->
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -25,32 +28,52 @@
         <form id="inputBook">
           <div class="input">
             <label for="inputBookTitle">Judul</label>
-            <input id="inputBookTitle" type="text" required />
+            <input
+              id="inputBookTitle"
+              type="text"
+              placeholder="The Tech Resume Inside Out"
+              required
+            />
           </div>
           <div class="input">
             <label for="inputBookAuthor">Penulis</label>
-            <input id="inputBookAuthor" type="text" required />
+            <input
+              id="inputBookAuthor"
+              type="text"
+              placeholder="Gergely Orosz"
+              required
+            />
           </div>
           <div class="input">
             <label for="inputBookYear">Tahun</label>
-            <input id="inputBookYear" type="number" required />
+            <input
+              id="inputBookYear"
+              type="number"
+              min="0"
+              placeholder="2020"
+              required
+            />
           </div>
           <div class="input_inline">
             <label for="inputBookIsComplete">Selesai dibaca</label>
             <input id="inputBookIsComplete" type="checkbox" />
           </div>
           <button id="bookSubmit" type="submit">
-            Masukkan Buku ke rak <span>Belum selesai dibaca</span>
+            Masukkan Buku ke rak
+            <span id="textIsCompleted">Belum selesai dibaca</span>
           </button>
         </form>
       </section>
 
       <section class="search_section">
-        <h2>Cari Buku (Opsional)</h2>
+        <h2>Cari Buku</h2>
         <form id="searchBook">
-          <label for="searchBookTitle">Judul</label>
-          <input id="searchBookTitle" type="text" />
-          <button id="searchSubmit" type="submit">Cari</button>
+          <div>
+            <input id="searchBookTitle" type="text" placeholder="Judul Buku" />
+            <button id="searchSubmit" type="submit">
+              <span class="material-symbols-outlined">search</span>
+            </button>
+          </div>
         </form>
       </section>
 
@@ -64,8 +87,15 @@
             <p>Tahun: 2002</p>
 
             <div class="action">
-              <button class="green">Selesai dibaca</button>
-              <button class="red">Hapus buku</button>
+              <button class="uncheck">
+                <span class="material-symbols-outlined"> check_circle </span>
+              </button>
+              <button class="edit">
+                <span class="material-symbols-outlined"> edit </span>
+              </button>
+              <button class="delete">
+                <span class="material-symbols-outlined"> delete_forever </span>
+              </button>
             </div>
           </article> -->
         </div>
@@ -90,5 +120,6 @@
     </main>
 
     <script src="main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </body>
 </html>

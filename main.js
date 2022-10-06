@@ -6,14 +6,31 @@ const STORAGE_KEY = "BOOKSHELF_APPS";
 document.addEventListener("DOMContentLoaded", function () {
   const inputBookForm = document.getElementById("inputBook");
   const searchBookForm = document.getElementById("searchBook");
+  const inputBookIsComplete = document.getElementById("inputBookIsComplete");
+  const btnTextIsComplete = document.getElementById("textIsCompleted");
 
   inputBookForm.addEventListener("submit", function (event) {
     event.preventDefault();
     addBook();
+
+    if (inputBookIsComplete.checked) {
+      btnTextIsComplete.textContent = "Selesai dibaca";
+    } else {
+      btnTextIsComplete.textContent = "Belum selesai dibaca";
+    }
   });
+
   searchBookForm.addEventListener("submit", function (event) {
     event.preventDefault();
     searchBook();
+  });
+
+  inputBookIsComplete.addEventListener("click", function () {
+    if (inputBookIsComplete.checked) {
+      btnTextIsComplete.textContent = "Selesai dibaca";
+    } else {
+      btnTextIsComplete.textContent = "Belum selesai dibaca";
+    }
   });
 
   if (isStorageExist()) loadDataFromStorage();
@@ -59,6 +76,7 @@ function addBook() {
 
   books.push(bookObject);
   document.dispatchEvent(new Event(RENDER_EVENT));
+  document.getElementById("inputBook").reset();
   saveData();
 }
 
@@ -82,34 +100,51 @@ function makeBook(bookObject) {
   const bookAuthor = document.createElement("p");
   const bookYear = document.createElement("p");
   const bookAction = document.createElement("div");
-  const greenBtn = document.createElement("button");
+  const checkIcon = document.createElement("span");
+  const editIcon = document.createElement("span");
+  const deleteIcon = document.createElement("span");
+  const checkBtn = document.createElement("button");
+  const editBtn = document.createElement("button");
   const deleteBookBtn = document.createElement("button");
 
   bookItem.classList.add("book_item");
   bookAction.classList.add("action");
-  greenBtn.classList.add("green");
-  deleteBookBtn.classList.add("red");
+  checkIcon.classList.add("material-symbols-outlined");
+  editIcon.classList.add("material-symbols-outlined");
+  deleteIcon.classList.add("material-symbols-outlined");
+  editBtn.classList.add("edit");
+  deleteBookBtn.classList.add("delete");
 
   bookTitle.textContent = bookObject.title;
   bookAuthor.textContent = `Penulis: ${bookObject.author}`;
   bookYear.textContent = `Tahun: ${bookObject.year}`;
-  greenBtn.textContent = "Selesai dibaca";
-  deleteBookBtn.textContent = "Hapus buku";
+  checkIcon.textContent = "check_circle";
+  editIcon.textContent = "edit";
+  deleteIcon.textContent = "delete_forever";
+
+  checkBtn.appendChild(checkIcon);
+  editBtn.appendChild(editIcon);
+  deleteBookBtn.appendChild(deleteIcon);
 
   bookItem.append(bookTitle, bookAuthor, bookYear, bookAction);
-  bookAction.append(greenBtn, deleteBookBtn);
+  bookAction.append(checkBtn, editBtn, deleteBookBtn);
 
   if (bookObject.isCompleted) {
-    greenBtn.textContent = "Belum selesai di Baca";
+    checkBtn.classList.add("check");
 
-    greenBtn.addEventListener("click", function () {
+    checkBtn.addEventListener("click", function () {
       moveBookToUncomplete(bookObject.id);
     });
   } else {
-    greenBtn.addEventListener("click", function () {
+    checkBtn.classList.add("uncheck");
+    checkBtn.addEventListener("click", function () {
       moveBookToComplete(bookObject.id);
     });
   }
+
+  editBtn.addEventListener("click", async function () {
+    editBook(bookObject);
+  });
 
   deleteBookBtn.addEventListener("click", function () {
     removeBook(bookObject.id);
@@ -145,6 +180,64 @@ function findBook(bookId) {
     }
   }
   return null;
+}
+
+async function editBook(book) {
+  const { value: editBookFormValues } = await Swal.fire({
+    title: "Ubah Buku",
+    html: `
+      <label for="swal-inputBookTitle">Judul</label>
+      <input id="swal-inputBookTitle" class="swal2-input" type="text" value=${book.title} placeholder="Judul" required>
+
+      <label for="swal-inputBookAuthor">Penulis</label>
+      <input id="swal-inputBookAuthor" class="swal2-input" type="text" value=${book.author} placeholder="Penulis" required>
+
+      <label for="swal-inputBookYear">Tahun</label>
+      <input id="swal-inputBookYear" class="swal2-input" type="number" value=${book.year} min="0" placeholder="Tahun" required>
+    `,
+    focusConfirm: false,
+    showCancelButton: true,
+    cancelButtonText: "Batal",
+    confirmButtonColor: "#16a34a",
+    confirmButtonText: "Simpan",
+    preConfirm: () => {
+      return {
+        title: document.getElementById("swal-inputBookTitle").value,
+        author: document.getElementById("swal-inputBookAuthor").value,
+        year: document.getElementById("swal-inputBookYear").value,
+      };
+    },
+  });
+
+  if (editBookFormValues) {
+    saveEditedBook(book.id, editBookFormValues, book.isCompleted);
+    Swal.fire({
+      icon: "success",
+      text: "Buku berhasil diubah",
+      showConfirmButton: false,
+      timer: 1200,
+    });
+  }
+}
+
+function saveEditedBook(bookId, editedBookValues, bookIsComplete) {
+  const bookTarget = findBookIndex(bookId);
+  const bookTitle = editedBookValues.title;
+  const bookAuthor = editedBookValues.author;
+  const bookYear = editedBookValues.year;
+
+  const editedBook = generateBookObject(
+    bookId,
+    bookTitle,
+    bookAuthor,
+    Number(bookYear),
+    bookIsComplete
+  );
+
+  books.splice(bookTarget, 1, editedBook);
+
+  document.dispatchEvent(new Event(RENDER_EVENT));
+  saveData();
 }
 
 function removeBook(bookId) {
