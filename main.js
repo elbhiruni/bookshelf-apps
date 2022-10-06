@@ -144,11 +144,29 @@ function makeBook(bookObject) {
 
     checkBtn.addEventListener("click", function () {
       moveBookToUncomplete(bookObject.id);
+      Swal.fire({
+        toast: true,
+        icon: "success",
+        position: "top-right",
+        title: "Buku dipindahkan ke rak Belum selesai dibaca",
+        timer: 2500,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
     });
   } else {
     checkBtn.classList.add("uncheck");
     checkBtn.addEventListener("click", function () {
       moveBookToComplete(bookObject.id);
+      Swal.fire({
+        toast: true,
+        icon: "success",
+        position: "top-right",
+        title: "Buku dipindahkan ke rak Selesai dibaca",
+        timer: 2500,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
     });
   }
 
