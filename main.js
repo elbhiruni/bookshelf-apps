@@ -147,7 +147,7 @@ function makeBook(bookObject) {
   });
 
   deleteBookBtn.addEventListener("click", function () {
-    removeBook(bookObject.id);
+    removeBook(bookObject);
   });
 
   return bookItem;
@@ -240,14 +240,28 @@ function saveEditedBook(bookId, editedBookValues, bookIsComplete) {
   saveData();
 }
 
-function removeBook(bookId) {
-  const bookTarget = findBookIndex(bookId);
+function removeBook(book) {
+  Swal.fire({
+    title: `Apakah anda ingin menghapus buku ${book.title} ?`,
+    icon: "warning",
+    focusCancel: true,
+    showCancelButton: true,
+    confirmButtonColor: "#dc2626",
+    cancelButtonColor: "#3b82f6",
+    confirmButtonText: "YA HAPUS BUKU",
+    cancelButtonText: "Batal",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const bookTarget = findBookIndex(book.id);
 
-  if (bookTarget === -1) return;
+      if (bookTarget === -1) return;
 
-  books.splice(bookTarget, 1);
-  document.dispatchEvent(new Event(RENDER_EVENT));
-  saveData();
+      books.splice(bookTarget, 1);
+      document.dispatchEvent(new Event(RENDER_EVENT));
+      saveData();
+      Swal.fire("Terhapus!", `Buku ${book.title} telah dihapus`, "success");
+    }
+  });
 }
 
 function findBookIndex(bookId) {
