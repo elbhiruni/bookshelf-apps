@@ -235,13 +235,3 @@ p {
   color: white;
   border-color: var(--delete);
 }
-
-.book_shelf > .book_list > .book_item > .action > .green {
-  background-color: darkgreen;
-  color: white;
-}
-
-.book_shelf > .book_list > .book_item > .action > .red {
-  background-color: darkred;
-  color: white;
-}
