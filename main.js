@@ -1,6 +1,5 @@
 const books = [];
 const RENDER_EVENT = "render-book";
-const SAVED_EVENT = "saved-book";
 const STORAGE_KEY = "BOOKSHELF_APPS";
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -63,10 +62,6 @@ document.addEventListener(RENDER_EVENT, function () {
       completedBOOKList.append(bookElement);
     }
   }
-});
-
-document.addEventListener(SAVED_EVENT, function () {
-  console.log(localStorage.getItem(STORAGE_KEY));
 });
 
 function addBook() {
@@ -311,7 +306,6 @@ function saveData() {
   if (isStorageExist()) {
     const parsed = JSON.stringify(books);
     localStorage.setItem(STORAGE_KEY, parsed);
-    document.dispatchEvent(new Event(SAVED_EVENT));
   }
 }
 
