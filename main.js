@@ -213,17 +213,17 @@ async function editBook(book) {
     html: `
       <div>
         <label for="swal-inputBookTitle">Judul</label>
-        <input id="swal-inputBookTitle" class="swal2-input" type="text" value=${book.title} placeholder="Judul" required>
+        <input id="swal-inputBookTitle" class="swal2-input" type="text" value="${book.title}" placeholder="Judul" required>
       </div>
 
       <div>
         <label for="swal-inputBookAuthor">Penulis</label>
-        <input id="swal-inputBookAuthor" class="swal2-input" type="text" value=${book.author} placeholder="Penulis" required>
+        <input id="swal-inputBookAuthor" class="swal2-input" type="text" value="${book.author}" placeholder="Penulis" required>
       </div>
 
       <div>
         <label for="swal-inputBookYear">Tahun</label>
-        <input id="swal-inputBookYear" class="swal2-input" type="number" value=${book.year} min="0" placeholder="Tahun" required>
+        <input id="swal-inputBookYear" class="swal2-input" type="number" value="${book.year}" min="0" placeholder="Tahun" required>
       </div>
     `,
     focusConfirm: false,
