@@ -1,3 +1,5 @@
+import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11.10.4/+esm";
+
 const books = [];
 const RENDER_EVENT = "render-book";
 const STORAGE_KEY = "BOOKSHELF_APPS";
